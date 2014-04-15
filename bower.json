@@ -1,6 +1,6 @@
 {
   "name": "echo-angular",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "./js/echo.services.js",
   "description": "Client for Talis Echo",
   "repository": {
