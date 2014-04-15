@@ -23,6 +23,18 @@ You'll need to define a constant somewhere for the `ECHO_ENDPOINT`. We do it lik
 
 ```
 
+We have our environment set up by a dynamic `env.js` script that is served from Express, using the [user agent middleware](https://github.com/biggora/express-useragent) to pass back sanitised information about the browser back to angular. It esablishes these futher constants that are injected into the service:
+
+```javascript
+
+constant('BROWSER_NAME','Chrome').
+constant('BROWSER_VERSION','34.0.1847.116').
+constant('BROWSER_COMPAT_MODE','false');
+
+```
+
+These are set in the `props` of the event sent back to echo.
+
 You'll also need `app-logger-angular` (see repo [here](https://github.com/talis/app-logging-angular-service)) which bower will install for you, but you'll need to reference that and this module somewhere:
 
 ```javascript
