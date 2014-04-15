@@ -1,0 +1,19 @@
+{
+    "name": "echo-angular",
+    "version": "0.1.0",
+    "main": "./js/echo.services.js",
+    "description": "Client for Talis Echo",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/talis/echo-angular-service.git"
+    },
+    "dependencies": {
+        "angular": "*",
+        "app-logger-angular" : "0.1.0"
+    },
+    "ignore": [
+        "node_modules",
+        "components",
+        "lib"
+    ]
+}
