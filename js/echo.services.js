@@ -72,7 +72,7 @@ angular.module('talis.services.echo', []).factory("echo",[
             }
 
             var event = {
-                class: className,
+                "class": className,
                 source: APP_ID,
                 timestamp: Math.floor(new Date().getTime() / 1000) // seconds since epoch
             };
