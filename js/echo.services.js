@@ -31,7 +31,7 @@ angular.module('talis.services.echo', []).factory("echo",[
             }
 
             if (_events.length>0) {
-                $rootScope.$apply(function() {
+                //$rootScope.$apply(function() {
                     $http.post(ECHO_ENDPOINT+'/1/events',_events, {"headers":{"Content-Type":"application/json"}}).success(function(response) {
                         applicationLoggingService.debug("Successfully flushed "+_events.length+" events to backend");
                         // ok!
@@ -50,7 +50,7 @@ angular.module('talis.services.echo', []).factory("echo",[
                             });
                             ctx._flush();
                         });
-                });
+                //});
             } else {
                 applicationLoggingService.debug("No events to flush");
             }
