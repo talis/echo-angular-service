@@ -1,6 +1,6 @@
 {
   "name": "echo-angular",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "main": "./js/echo.services.js",
   "description": "Client for Talis Echo",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "angular": "*",
-    "app-logger-angular": "0.1.0",
+    "app-logger-angular": "1.0.0",
     "lodash": "~2.4.1"
   },
   "ignore": [
