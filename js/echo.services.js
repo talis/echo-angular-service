@@ -23,7 +23,10 @@ angular.module('talis.services.echo', []).factory("echo",[
             if (this._events.length>MAX_FLUSH_EVENTS) {
                 _events = _.first(this._events,MAX_FLUSH_EVENTS);
                 this._events = _.rest(this._events,MAX_FLUSH_EVENTS);
-                applicationLoggingService.debug("Only flushing "+MAX_FLUSH_EVENTS+" at a time - re-queued "+this._events.length+" events");
+                applicationLoggingService.debug(
+                    "Only flushing "+MAX_FLUSH_EVENTS+" at a time - re-queued "+this._events.length+" events",
+                    {'type' : 'echo.service.backlog'}
+                );
                 this._flush();
             } else {
                 _events = this._events;
@@ -31,28 +34,34 @@ angular.module('talis.services.echo', []).factory("echo",[
             }
 
             if (_events.length>0) {
-                //$rootScope.$apply(function() {
-                    $http.post(ECHO_ENDPOINT+'/1/events',_events, {"headers":{"Content-Type":"application/json"}}).success(function(response) {
-                        applicationLoggingService.debug("Successfully flushed "+_events.length+" events to backend");
-                        // ok!
-                    }).error(function(response) {
+                $http.post(ECHO_ENDPOINT+'/1/events',_events, {"headers":{"Content-Type":"application/json"}}).success(function(response) {
+                    applicationLoggingService.debug(
+                        "Successfully flushed "+_events.length+" events to backend",
+                        {'type' : 'echo.service.upload'}
+                    );
+                    // ok!
+                }).error(function(response) {
+                    // back off debounce and interval
+                    DEBOUNCE_INTERVAL = Math.floor(DEBOUNCE_INTERVAL*BACK_OFF_FACTOR);
+                    MAX_INTERVAL = Math.floor(MAX_INTERVAL*BACK_OFF_FACTOR);
+                    instance._flush = _.debounce(instance._instantFlush,DEBOUNCE_INTERVAL,{'maxWait':MAX_INTERVAL});
 
-                            // back off debounce and interval
-                            DEBOUNCE_INTERVAL = Math.floor(DEBOUNCE_INTERVAL*BACK_OFF_FACTOR);
-                            MAX_INTERVAL = Math.floor(MAX_INTERVAL*BACK_OFF_FACTOR);
-                            instance._flush = _.debounce(instance._instantFlush,DEBOUNCE_INTERVAL,{'maxWait':MAX_INTERVAL});
+                    applicationLoggingService.error(
+                        "Error flushing "+_events.length+" events to backend, backing off to "+DEBOUNCE_INTERVAL+"/"+MAX_INTERVAL+", re-queueing...",
+                        {'type' : 'echo.service.upload'}
+                    );
 
-                            applicationLoggingService.error("Error flushing "+_events.length+" events to backend, backing off to "+DEBOUNCE_INTERVAL+"/"+MAX_INTERVAL+", re-queueing...");
-
-                            // have another crack
-                            _events.forEach(function(event) {
-                                ctx._events.push(event);
-                            });
-                            ctx._flush();
-                        });
-                //});
+                    // have another crack
+                    _events.forEach(function(event) {
+                        ctx._events.push(event);
+                    });
+                    ctx._flush();
+                });
             } else {
-                applicationLoggingService.debug("No events to flush");
+                applicationLoggingService.debug(
+                    "No events to flush",
+                    {'type' : 'echo.service.upload'}
+                );
             }
         };
 
@@ -61,13 +70,22 @@ angular.module('talis.services.echo', []).factory("echo",[
 
         instance.add = function(className,props) {
             if (_.isEmpty(className)) {
-                applicationLoggingService.error("No key supplied to events.add");
+                applicationLoggingService.error(
+                    "No key supplied to events.add",
+                    {'type' : 'echo.service.usage'}
+                );
                 return;
             } else if (!_.isString(className)) {
-                applicationLoggingService.error("key supplied to events.add is not a string: "+JSON.stringify(className));
+                applicationLoggingService.error(
+                    "key supplied to events.add is not a string: " + JSON.stringify(className),
+                    {'type' : 'echo.service.usage'}
+                );
                 return;
-            } else if (props!=null && !_.isObject(props)) {
-                applicationLoggingService.error("props supplied to events.add should be null or object")
+            } else if (props!==null && !_.isObject(props)) {
+                applicationLoggingService.error(
+                    "props supplied to events.add should be null or object",
+                    {'type' : 'echo.service.usage'}
+                );
                 return;
             }
 
@@ -80,7 +98,9 @@ angular.module('talis.services.echo', []).factory("echo",[
             event.props.browser_name = BROWSER_NAME;
             event.props.browser_version = BROWSER_VERSION;
             event.props.browser_compat_mode = BROWSER_COMPAT_MODE;
-            if ($rootScope.user != null && $rootScope.user.guid != null) event['user'] = $rootScope.user.guid;
+            if ($rootScope.user !==null && $rootScope.user.guid !==null) {
+                event['user'] = $rootScope.user.guid;
+            }
 
             this._events.push(event);
             this._flush();
