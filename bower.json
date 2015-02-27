@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "angular": "*",
-    "app-logger-angular": "1.0.0",
+    "app-logger-angular": "LIG-405-AddOptionalDescription",
     "lodash": "~2.4.1"
   },
   "ignore": [
