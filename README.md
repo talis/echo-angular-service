@@ -1,6 +1,8 @@
 echo-angular-service
 ====================
 
+[![Dependency Status](https://dependencyci.com/github/talis/echo-angular-service/badge)](https://dependencyci.com/github/talis/echo-angular-service)
+
 An angular service to submit events to [Talis Echo](http://docs.talisecho.apiary.io) with a debounce.
 
 For internal use at Talis as you'll need some way of obtaining Talis OAuth tokens to use (we inject these with [transformRequest](http://engineering.talis.com/articles/elegant-api-auth-angular-js/)) but provided for intellectual interest in case anyone else is thinking of doing something similar. MIT licenced so rip, remix and enjoy.
