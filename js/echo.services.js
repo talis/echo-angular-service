@@ -46,7 +46,7 @@ angular.module('talis.services.echo', []).factory("echo",[
                     MAX_INTERVAL = Math.floor(MAX_INTERVAL*BACK_OFF_FACTOR);
                     instance._flush = _.debounce(instance._instantFlush,DEBOUNCE_INTERVAL,{'maxWait':MAX_INTERVAL});
 
-                    applicationLoggingService.error(
+                    applicationLoggingService.warn(
                         "Error flushing "+_events.length+" events to backend, backing off to "+DEBOUNCE_INTERVAL+"/"+MAX_INTERVAL+", re-queueing...",
                         {'type' : 'echo.service.upload'}
                     );
