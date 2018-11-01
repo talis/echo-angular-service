@@ -8,7 +8,19 @@ angular.module('talis.services.echo', []).factory("echo",[
     "APP_ID",
     "BROWSER_NAME",
     "BROWSER_VERSION",
-    "BROWSER_COMPAT_MODE", function($rootScope, $http, applicationLoggingService,ECHO_ENDPOINT,APP_ID,BROWSER_NAME,BROWSER_VERSION,BROWSER_COMPAT_MODE) {
+    "BROWSER_COMPAT_MODE",
+    "BROWSER_OS",
+    "BROWSER_MOBILE",
+    function($rootScope,
+        $http,
+        applicationLoggingService,
+        ECHO_ENDPOINT,
+        APP_ID,
+        BROWSER_NAME,
+        BROWSER_VERSION,
+        BROWSER_COMPAT_MODE,
+        BROWSER_OS,
+        BROWSER_MOBILE) {
         var instance = function() {};
         var MAX_FLUSH_EVENTS = 10;
         var DEBOUNCE_INTERVAL = 2500;
@@ -98,6 +110,8 @@ angular.module('talis.services.echo', []).factory("echo",[
             event.props.browser_name = BROWSER_NAME;
             event.props.browser_version = BROWSER_VERSION;
             event.props.browser_compat_mode = BROWSER_COMPAT_MODE;
+            event.props.browser_os = BROWSER_OS;
+            event.props.browser_mobile = BROWSER_MOBILE;
             if ($rootScope.user !==null && $rootScope.user.guid !==null) {
                 event['user'] = $rootScope.user.guid;
             }

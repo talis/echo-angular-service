@@ -1,3 +1,9 @@
+## 1.2.3 (2018-11-02)
+
+Features:
+
+  - Send additional browser info to Echo
+
 ## 1.2.1 (2016-02-24)
 
 Bug fixes:
