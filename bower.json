@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "angular": "*",
-    "app-logger-angular": "2.x",
+    "app-logger-angular": "3.x",
     "lodash": "~2.4.1"
   },
   "ignore": [
